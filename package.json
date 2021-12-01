@@ -1,0 +1,23 @@
+{
+  "name": "nebula-gui",
+  "version": "0.0.0",
+  "description": "An Electron GUI for nebula vpn",
+  "main": "main.js",
+  "scripts": {
+    "start": "./node_modules/.bin/electron ."
+  },
+  "repository": "https://github.com/XDGFX/nebula-gui",
+  "keywords": [
+    "Electron",
+    "nebula",
+    "vpn",
+    "gui"
+  ],
+  "author": "XDGFX",
+  "license": "GPLv3",
+  "devDependencies": {
+    "electron": "^16.0.1",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "dependencies": {}
+}
