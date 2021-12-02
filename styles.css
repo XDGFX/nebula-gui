@@ -1,15 +1,35 @@
-* {
-  /* Disable the text select cursor everywhere */
+@font-face {
+  font-family: "Outfit";
+  src: url("fonts/Outfit-Light.ttf") format("truetype");
+  font-weight: lighter;
+  font-style: normal;
+}
+
+/* Used to prevent users being able to select content */
+*,
+*::after,
+*::before {
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
   cursor: default;
 }
 
+/* Define colour variables */
+:root {
+  --colour-background: #323238;
+  --colour-foreground: #fafafa;
+  --colour-secondary: #3c3a41;
+  --colour-tertiary: #535355;
+  --colour-bright: #a1a1a1;
+  --colour-cyan: #56c4c5;
+}
+
 body {
+  font-family: "Outfit";
+  color: var(--colour-foreground);
+  background-color: var(--colour-background);
   height: 100%;
-  background-color: #3b3b3b;
-
-  /* Used to prevent users being able to select content */
-  -webkit-user-select: none;
-
   margin: 0;
 }
 
@@ -17,10 +37,10 @@ nav {
   display: block;
   width: 100%;
   height: 30px;
-  background-color: #333333;
+  background-color: var(--colour-secondary);
   -webkit-app-region: drag;
   -webkit-user-select: none;
-  position: fixed;
+  /* position: fixed; */
   z-index: 1;
 }
 
@@ -29,7 +49,6 @@ nav #buttons {
   width: 60px;
   height: 100%;
   line-height: 30px;
-  background-color: #222222;
   -webkit-app-region: no-drag;
 }
 
@@ -39,16 +58,205 @@ nav #buttons #quit {
   height: 100%;
   width: 50%;
   text-align: center;
-  color: #f7f7f7;
+  color: var(--colour-foreground);
   cursor: default;
 }
 
 nav #buttons #minimize:hover {
-  background-color: #333333aa;
-}
-nav #buttons #maximize:hover {
-  background-color: #333333aa;
+  background-color: var(--colour-tertiary);
 }
 nav #buttons #quit:hover {
   background-color: #ff0000dd;
+}
+
+#title h1 {
+  margin: 0.6em 0 0 0;
+}
+
+#title h2 {
+  font-size: 0.75em;
+  font-weight: lighter;
+  color: var(--colour-bright);
+  text-align: center;
+  margin: 0;
+}
+
+#world {
+  margin: 1.5em 3em 1.5em 3em;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+#world #world-connected {
+  /* Move on top of other element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+#title {
+  font-size: 1em;
+  text-align: center;
+}
+
+#buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
+button {
+  color: var(--colour-foreground);
+  background-color: var(--colour-secondary);
+
+  font-family: "Outfit";
+  font-size: 1.25em;
+
+  width: 12em;
+  height: 3em;
+
+  border: none;
+  border-radius: 0.5em;
+
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--colour-tertiary);
+}
+
+#switchContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1em;
+  width: 100%;
+  height: 100%;
+}
+
+#switchContainer p {
+  padding: 0em 1em 0em 1em;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--colour-secondary);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--colour-cyan);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--colour-cyan);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+button {
+  position: relative;
+}
+
+button.has-spinner::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 4px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: button-loading-spinner 1.5s cubic-bezier(0.75, 0.3, 0.3, 0.75)
+    infinite;
+}
+
+#downloadSpinner {
+  margin-top: 9em;
+  height: 10em;
+  width: 100%;
+  position: relative;
+}
+
+#downloadSpinner span.spinner::after {
+  content: "";
+  position: absolute;
+  width: 8em;
+  height: 8em;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 6px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: button-loading-spinner 1.5s cubic-bezier(0.75, 0.3, 0.3, 0.75)
+    infinite;
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(2turn);
+  }
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

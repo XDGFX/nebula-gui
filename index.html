@@ -6,12 +6,11 @@
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
   <link href="./styles.css" rel="stylesheet">
-  <title>Hello World!</title>
+  <title>Nebula VPN</title>
 </head>
 
 <body>
   <nav>
-    <div id="titleshown"></div>
     <div id="buttons">
         <div id="minimize"><span>&dash;</span></div>
         <div id="quit"><span>&times;</span></div>
@@ -19,10 +18,24 @@
   </nav>
   <div id="content">
     <div id="title">
-      <h1>Hello World!</h1>
+      <h1>Nebula VPN</h1>
+      <h2>v0.0.1 - nebula v1.5.0</h2>
     </div>
-    <div id="body">
-      <button id="vpn-connect">Click Me!</button>
+    <div id="world">
+      <img id="world-disconnected" src="./media/world-disconnected.svg">
+      <img id="world-connected" src="./media/world-connected.svg">
+    </div>
+    <div id="buttonContainer">
+      <button id="vpnConnect">Connect<span class="spinner"></span></button>
+    </div>
+    <div id="switchContainer">
+      <p>
+        Autoconnect
+      </p>
+      <label class="switch">
+        <input id="autoconnect" type="checkbox">
+        <span class="slider round"></span>
+      </label>
     </div>
   </div>
 

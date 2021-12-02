@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <link href="./styles.css" rel="stylesheet">
+  <title>Nebula VPN</title>
+</head>
+
+<body>
+  <nav>
+    <div id="buttons">
+        <div id="minimize"><span>&dash;</span></div>
+        <div id="quit"><span>&times;</span></div>
+    </div>
+  </nav>
+  <div id="content">
+    <div id="downloadSpinner">
+        <span class="spinner"></span>
+    </div>
+    <div id="title">
+      <h1>Downloading binaries...</h1>
+      <h2>v0.0.1 - nebula v<span id="version">1.5.0</span></h2>
+    </div>
+  </div>
+
+  <script src="./renderer.js"></script>
+
+</html>

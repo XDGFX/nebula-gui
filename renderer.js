@@ -1,28 +1,11 @@
 const { ipcRenderer } = require("electron");
-const { spawn } = require("child_process");
 
-console.log(`Running on platform: ${process.platform} ${process.arch}`);
+let storage = window.localStorage;
+let connectedToVPN = false;
 
-// Throw an error if architecture is not x64
-// if (process.arch !== "x64") {
-ipcRenderer.send(
-  "error",
-  "This application is only compatible with x64 architecture."
-);
-
-throw new Error(
-  `This application is only compatible with x64 architecture. You are running ${process.arch}`
-);
-// }
-
-// Get Nebula binary version
-let binary = "nebula-";
-if (process.platform === "darwin") {
-  binary += "darwin.zip";
-} else if (process.platform === "win32") {
-  binary += "windows-amd64.zip";
-} else if (process.platform === "linux") {
-  binary += "linux-amd64.tar.gz";
+// Initialise storage parameters if they don't exist
+if (!storage.getItem("autoconnect")) {
+  storage.setItem("autoconnect", false);
 }
 
 // Handler for custom window buttons
@@ -34,22 +17,91 @@ document.querySelector("#quit").addEventListener("click", function () {
   ipcRenderer.send("quit");
 });
 
-// Handler for vpn connection buttons
-document.querySelector("#vpn-connect").addEventListener("click", function () {
-  console.log("Connecting to VPN");
-  // ipcRenderer.send("vpn-connect");
+function connect() {
+  /**
+   * Connect to the VPN.
+   */
 
-  cmd = spawn("ip", ["addr"]);
+  button = document.querySelector("#vpnConnect");
+  slider = document.querySelector("#autoconnect");
 
-  cmd.stdout.on("data", function (data) {
-    console.log(data.toString());
-  });
+  if (connectedToVPN) {
+    // Button is now disconnect
+    connectedFade("out");
+    button.innerHTML = "Connect";
+    connectedToVPN = false;
 
-  cmd.stderr.on("data", function (data) {
-    console.log(data.toString());
-  });
+    // Connect to the VPN
+    ipcRenderer.send("vpn-disconnect");
+  } else {
+    console.log("Connecting to VPN...");
 
-  cmd.on("close", function (code) {
-    console.log("child process exited with code " + code);
-  });
+    // Set the connect button to "Connecting..." with a spinner
+    button.innerHTML = "";
+    button.classList.add("has-spinner");
+    button.disabled = true;
+    slider.disabled = true;
+
+    // Connect to the VPN
+    ipcRenderer.send("vpn-connect");
+  }
+}
+
+function connectedFade(direction) {
+  /**
+   * Fade the world image in or out.
+   *
+   * @param {string} direction - The direction of the fade.
+   */
+
+  let fadeIn = direction === "in";
+
+  let op = fadeIn ? 0 : 1;
+  const timer = setInterval(function () {
+    op += fadeIn ? 0.1 : -0.1;
+
+    if (op > 1 || op < 0) {
+      clearInterval(timer);
+    } else {
+      document.querySelector("#world-connected").style.opacity = op;
+    }
+  }, 50);
+}
+
+ipcRenderer.on("vpn-connected", function () {
+  // Only run if not already connected
+  if (!connectedToVPN) {
+    connectedFade("in");
+    button.innerHTML = "Disconnect";
+    button.classList.remove("has-spinner");
+    button.disabled = false;
+    slider.disabled = false;
+    connectedToVPN = true;
+  }
 });
+
+// Handler for vpn connection buttons
+document.querySelector("#vpnConnect").addEventListener("click", function () {
+  connect();
+});
+
+// Autoconnect toggle
+document.querySelector("#autoconnect").addEventListener("change", function () {
+  if (this.checked) {
+    console.log("Autoconnect enabled");
+    storage.setItem("autoconnect", true);
+
+    if (!connectedToVPN) {
+      connect();
+    }
+  } else {
+    storage.setItem("autoconnect", false);
+    console.log("Autoconnect disabled");
+  }
+});
+
+// Set autoconnect checkbox to match storage value
+if (storage.getItem("autoconnect") == "true") {
+  document.querySelector("#autoconnect").checked = true;
+  connect();
+}
