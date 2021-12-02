@@ -1,8 +1,6 @@
 "use strict";
 
-// Assign electron modules by destructuring the electron module array
-// Note: these do not need to be in order, it takes the names from the original object!
-const { app, BrowserWindow, session, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
 const download = require("download");
 const fs = require("fs");
@@ -11,6 +9,7 @@ const tarToZip = require("tar-to-zip");
 const extract = require("extract-zip");
 
 const NEBULA_VERSION = "1.4.0";
+const APP_VERSION = "0.0.1";
 
 const appData = app.getPath("userData");
 console.log("Appdata: " + appData);
@@ -58,6 +57,10 @@ function createWindow() {
   // trigger the callback once, unlike `on`
   mainWindow.once("ready-to-show", function () {
     mainWindow.show();
+  });
+
+  ipcMain.on("get-version", function (event) {
+    event.returnValue = { NEBULA_VERSION, APP_VERSION };
   });
 
   // Handle error events
@@ -151,6 +154,12 @@ async function extractBinary(file) {
   console.log("Extracting nebula binary...");
   try {
     await extract(file, { dir: path.join(appData, "binaries") });
+
+    // If on linux, mark the binary as executable
+    if (process.platform === "linux") {
+      fs.chmodSync(path.join(appData, "binaries", "nebula"), "755");
+    }
+
     console.log("Extraction complete");
     cleanupDownloads();
   } catch (err) {

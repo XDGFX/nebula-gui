@@ -8,6 +8,11 @@ if (!storage.getItem("autoconnect")) {
   storage.setItem("autoconnect", false);
 }
 
+// Set version number
+({ NEBULA_VERSION, APP_VERSION } = ipcRenderer.sendSync("get-version"));
+document.querySelector("#nebula-version").innerHTML = NEBULA_VERSION;
+document.querySelector("#app-version").innerHTML = APP_VERSION;
+
 // Handler for custom window buttons
 document.querySelector("#minimize").addEventListener("click", function () {
   ipcRenderer.send("minimize-window");
