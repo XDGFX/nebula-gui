@@ -63,14 +63,14 @@ function connectedFade(direction) {
 
   let op = fadeIn ? 0 : 1;
   const timer = setInterval(function () {
-    op += fadeIn ? 0.1 : -0.1;
+    op += fadeIn ? 0.01 : -0.01;
 
     if (op > 1 || op < 0) {
       clearInterval(timer);
     } else {
       document.querySelector("#world-connected").style.opacity = op;
     }
-  }, 50);
+  }, 5);
 }
 
 ipcRenderer.on("vpn-connected", function () {
