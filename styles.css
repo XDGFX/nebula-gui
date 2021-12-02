@@ -1,7 +1,14 @@
 @font-face {
   font-family: "Outfit";
   src: url("fonts/Outfit-Light.ttf") format("truetype");
-  font-weight: lighter;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("fonts/Roboto-Light.ttf") format("truetype");
+  font-weight: normal;
   font-style: normal;
 }
 
@@ -26,7 +33,7 @@
 }
 
 body {
-  font-family: "Outfit";
+  font-family: "Roboto";
   color: var(--colour-foreground);
   background-color: var(--colour-background);
   height: 100%;
@@ -70,10 +77,12 @@ nav #buttons #quit:hover {
 }
 
 #title h1 {
+  font-family: "Outfit";
   margin: 0.6em 0 0 0;
 }
 
 #title h2 {
+  font-family: "Outfit";
   font-size: 0.75em;
   font-weight: lighter;
   color: var(--colour-bright);
@@ -114,7 +123,7 @@ button {
   color: var(--colour-foreground);
   background-color: var(--colour-secondary);
 
-  font-family: "Outfit";
+  font-family: "Roboto";
   font-size: 1em;
 
   width: 12em;
