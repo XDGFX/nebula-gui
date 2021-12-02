@@ -14,7 +14,7 @@
     "gui"
   ],
   "author": "XDGFX",
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "devDependencies": {
     "electron": "^16.0.1",
     "electron-reload": "^2.0.0-alpha.1"

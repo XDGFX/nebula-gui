@@ -1,0 +1,54 @@
+* {
+  /* Disable the text select cursor everywhere */
+  cursor: default;
+}
+
+body {
+  height: 100%;
+  background-color: #3b3b3b;
+
+  /* Used to prevent users being able to select content */
+  -webkit-user-select: none;
+
+  margin: 0;
+}
+
+nav {
+  display: block;
+  width: 100%;
+  height: 30px;
+  background-color: #333333;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+  position: fixed;
+  z-index: 1;
+}
+
+nav #buttons {
+  float: right;
+  width: 60px;
+  height: 100%;
+  line-height: 30px;
+  background-color: #222222;
+  -webkit-app-region: no-drag;
+}
+
+nav #buttons #minimize,
+nav #buttons #quit {
+  float: left;
+  height: 100%;
+  width: 50%;
+  text-align: center;
+  color: #f7f7f7;
+  cursor: default;
+}
+
+nav #buttons #minimize:hover {
+  background-color: #333333aa;
+}
+nav #buttons #maximize:hover {
+  background-color: #333333aa;
+}
+nav #buttons #quit:hover {
+  background-color: #ff0000dd;
+}
