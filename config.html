@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <link href="./styles.css" rel="stylesheet">
+  <title>Login page</title>
+</head>
+
+<body>
+  <nav>
+    <div id="titleshown"></div>
+    <div id="buttons">
+      <div id="pad"></div>
+      <div id="minimize"><span>&dash;</span></div>
+      <div id="quit"><span>&times;</span></div>
+    </div>
+  </nav>
+  <div id="content">
+    <div id="title" title="Designed by XDGFX">
+      <h1>Nebula VPN</h1>
+      <h2>v<span id="app-version"></span> - nebula v<span id="nebula-version"></span></h2>
+    </div>
+    <div id="circle-animation">
+      <svg width="350" height="325">
+        <circle cx="175" cy="5" r="5" fill="#3c3a41" />
+        <circle class="config" cx="175" cy="20" r="5" fill="#3c3a41" />
+        <circle class="config" cx="175" cy="35" r="5" fill="#3c3a41" />
+        <circle class="config" cx="175" cy="50" r="5" fill="#fff" />
+        <circle class="config" cx="175" cy="65" r="5" fill="#3c3a41" />
+        <circle class="config" cx="175" cy="80" r="5" fill="#3c3a41" />
+        <circle class="ca-crt" cx="175" cy="95" r="5" fill="#3c3a41" />
+        <circle class="ca-crt" cx="175" cy="110" r="5" fill="#3c3a41" />
+        <circle class="ca-crt" cx="175" cy="125" r="5" fill="#fff" />
+        <circle class="ca-crt" cx="175" cy="140" r="5" fill="#3c3a41" />
+        <circle class="ca-crt" cx="175" cy="155" r="5" fill="#3c3a41" />
+        <circle class="client-crt" cx="175" cy="170" r="5" fill="#3c3a41" />
+        <circle class="client-crt" cx="175" cy="185" r="5" fill="#3c3a41" />
+        <circle class="client-crt" cx="175" cy="200" r="5" fill="#fff" />
+        <circle class="client-crt" cx="175" cy="215" r="5" fill="#3c3a41" />
+        <circle class="client-crt" cx="175" cy="230" r="5" fill="#3c3a41" />
+        <circle class="client-key "cx="175" cy="245" r="5" fill="#3c3a41" />
+        <circle class="client-key" cx="175" cy="260" r="5" fill="#3c3a41" />
+        <circle class="client-key" cx="175" cy="275" r="5" fill="#fff" />
+        <circle class="client-key" cx="175" cy="290" r="5" fill="#3c3a41" />
+        <circle class="client-key" cx="175" cy="305" r="5" fill="#3c3a41" />
+        <circle cx="175" cy="320" r="5" fill="#3c3a41" />
+        <text id="ca-crt" x="100" y="55" fill="#fafafa" text-anchor="end">
+          config
+      </text>
+        <text id="config" x="250" y="130" fill="#fafafa" text-anchor="start">
+          ca crt
+        </text>
+        <text id="client-crt" x="100" y="205" fill="#fafafa" text-anchor="end">
+          client crt
+      </text>
+        <text id="client-key" x="250" y="280" fill="#fafafa" text-anchor="start">
+          client key
+        </text>
+      </svg>
+    </div>
+    <div id="file-area">
+      <button id="file-button">Select</button>
+    </div>
+  </div>
+
+  <script src="./renderer.js"></script>
+  <script src="./config.js"></script>
+
+</html>

@@ -29,6 +29,7 @@
   --colour-secondary: #3c3a41;
   --colour-tertiary: #535355;
   --colour-bright: #a1a1a1;
+  --colour-dark: #2b2b30;
   --colour-cyan: #56c4c5;
 }
 
@@ -53,23 +54,33 @@ nav {
 
 nav #buttons {
   float: right;
-  width: 60px;
+  width: 90px;
   height: 100%;
   line-height: 30px;
   -webkit-app-region: no-drag;
 }
 
 nav #buttons #minimize,
-nav #buttons #quit {
+nav #buttons #quit,
+nav #buttons #settings {
   float: left;
   height: 100%;
-  width: 50%;
+  width: 30px;
   text-align: center;
   color: var(--colour-foreground);
   cursor: default;
 }
 
-nav #buttons #minimize:hover {
+nav #buttons #pad {
+  float: left;
+  height: 100%;
+  width: 30px;
+  cursor: default;
+  -webkit-app-region: drag;
+}
+
+nav #buttons #minimize:hover,
+nav #buttons #settings:hover {
   background-color: var(--colour-tertiary);
 }
 nav #buttons #quit:hover {
@@ -274,4 +285,20 @@ button.has-spinner::after {
   fill: url(#sphereGradient);
   stroke-width: 1px;
   backface-visibility: hidden;
+}
+
+/* Upload page */
+#file-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
+#circle-animation {
+  margin: 2em 0em;
+  display: flex;
+  justify-content: center;
 }

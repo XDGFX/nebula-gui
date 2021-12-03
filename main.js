@@ -63,6 +63,82 @@ function createWindow() {
     event.returnValue = { NEBULA_VERSION, APP_VERSION };
   });
 
+  ipcMain.on("open-file-dialog", function (event) {
+    dialog
+      .showOpenDialog({
+        title: "Select your nebula config files",
+        buttonLabel: "Select",
+        // Restricting the user to only Text Files.
+        filters: [
+          {
+            name: "Text Files",
+            extensions: ["crt", "key", "yml"],
+          },
+        ],
+        // Specifying the File Selector Property
+        properties: ["openFile", "multiSelections"],
+      })
+      .then((file) => {
+        if (!file.canceled) {
+          file.filePaths.forEach(function (filePath) {
+            const result = loadConfig(filePath);
+            event.sender.send("uploaded-file", result);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
+  function loadConfig(filepath) {
+    // Attempt to load a file from the filepath.
+    let target;
+    let result;
+
+    if (filepath.includes("ca.crt")) {
+      target = path.join(appData, "conf", "ca.crt");
+      result = "ca-crt";
+    } else if (filepath.includes("yml")) {
+      target = path.join(appData, "conf", "config.yml");
+      result = "config";
+    } else if (filepath.includes("key")) {
+      target = path.join(appData, "conf", "client.key");
+      result = "client-key";
+    } else if (filepath.includes("crt")) {
+      target = path.join(appData, "conf", "client.crt");
+      result = "client-crt";
+    }
+
+    // If the config, read and edit the file and save it.
+    if (result === "config") {
+      const config = fs.readFileSync(filepath, "utf8");
+      const newConfig = config
+        .replace(
+          /ca: [\w\W]+?\n/,
+          `ca: ${path.join(appData, "conf", "ca.crt")}\n`
+        )
+        .replace(
+          /cert: [\w\W]+?\n/,
+          `cert: ${path.join(appData, "conf", "client.crt")}\n`
+        )
+        .replace(
+          /key: [\w\W]+?\n/,
+          `key: ${path.join(appData, "conf", "client.key")}\n`
+        );
+
+      fs.writeFileSync(target, newConfig);
+    } else if (result) {
+      // Otherwise just copy it directly
+      fs.copyFile(filepath, target, function (err) {
+        if (err) throw err;
+        console.log("File copied to: " + target);
+      });
+    }
+
+    return result;
+  }
+
   // Handle error events
   ipcMain.on("error", function (event, message) {
     console.log(message);
@@ -70,19 +146,28 @@ function createWindow() {
   });
 
   // Check if the binary is already downloaded
-  const binary = getBinary();
-  if (binary) {
+  if (getBinary()) {
     console.log("Binary found, not downloading");
-    mainWindow.loadFile("index.html");
+
+    // If no config exists, load the config page
+    if (checkConfig()) {
+      mainWindow.loadFile("index.html");
+    } else {
+      mainWindow.loadFile("config.html");
+    }
   } else {
     mainWindow.loadFile("download.html");
 
     // Constantly check if the binary is downloaded
     const checkBinary = setInterval(function () {
-      const binary = getBinary();
-      if (binary) {
+      if (getBinary()) {
         clearInterval(checkBinary);
-        mainWindow.loadFile("index.html");
+
+        if (checkConfig()) {
+          mainWindow.loadFile("index.html");
+        } else {
+          mainWindow.loadFile("config.html");
+        }
       }
     }, 1000);
 
@@ -102,6 +187,24 @@ function createWindow() {
 
     downloadBinary(binary, ext);
   }
+}
+
+// Create the `binaries` and `conf` directories if they don't exist
+if (!fs.existsSync(path.join(appData, "binaries"))) {
+  fs.mkdirSync(path.join(appData, "binaries"));
+}
+
+if (!fs.existsSync(path.join(appData, "conf"))) {
+  fs.mkdirSync(path.join(appData, "conf"));
+}
+
+function checkConfig() {
+  return (
+    fs.existsSync(path.join(appData, "conf", "ca.crt")) &&
+    fs.existsSync(path.join(appData, "conf", "config.yml")) &&
+    fs.existsSync(path.join(appData, "conf", "client.crt")) &&
+    fs.existsSync(path.join(appData, "conf", "client.key"))
+  );
 }
 
 function getBinary() {
@@ -239,11 +342,11 @@ ipcMain.on("vpn-connect", function (event) {
   });
 
   nebula.on("close", function (code) {
-    console.log(`child process exited with code ${code}`);
+    console.log(`nebula process exited with code ${code}`);
   });
 
   nebula.on("error", function (err) {
-    console.log(`child process error: ${err}`);
+    console.log(`nebula process error: ${err}`);
   });
 
   // Disconnect from VPN

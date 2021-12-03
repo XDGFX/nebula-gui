@@ -16,12 +16,12 @@
   "author": "XDGFX",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "electron": "^16.0.3",
     "electron-reload": "^2.0.0-alpha.1"
   },
   "dependencies": {
     "animejs": "^3.2.1",
     "download": "^8.0.0",
+    "electron": "^16.0.4",
     "extract-zip": "^2.0.1",
     "tar-to-zip": "^3.0.0"
   }
