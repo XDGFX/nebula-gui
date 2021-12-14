@@ -14,10 +14,10 @@ const APP_VERSION = "0.0.1";
 const appData = app.getPath("userData");
 console.log("Appdata: " + appData);
 
-// If not production, enable hot reload
-if (process.env.NODE_ENV !== "production") {
-  require("electron-reload")(__dirname);
-}
+// // If not production, enable hot reload
+// if (process.env.NODE_ENV !== "production") {
+//   require("electron-reload")(__dirname);
+// }
 
 console.log(`Running on platform: ${process.platform} ${process.arch}`);
 
